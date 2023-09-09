@@ -1,4 +1,6 @@
-﻿namespace TheBloomingHome.API.Entities;
+﻿using System.Collections.Generic;
+
+namespace TheBloomingHome.API.Entities;
 
 public class Product
 {
@@ -7,8 +9,8 @@ public class Product
     public string Description { get; set; }
     public int Count { get; set; }
     public bool IsAvailable => Count > 0;
-    public Feature[] Features { get; set; }
-    public string[] Stats { get; set; }
-    public Comment[] Comments { get; set; }
+    public List<Feature> Features { get; set; } = new();
+    public List<Property> Stats { get; set; } = new();
+    //public List<Comment> Comments { get; set; } = new();
 }
 

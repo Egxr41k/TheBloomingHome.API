@@ -9,5 +9,9 @@ public class ProductContext : DbContext
     {
     }
 
-    public DbSet<Product> Products { get; set; }
+    public DbSet<Product> Products { get; set; } = null!;
+    public DbSet<Feature> Features { get; set; } = null!;
+    public DbSet<Property> Stats { get; set; } = null!;
+    public DbSet<Comment> Comments { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
 }
