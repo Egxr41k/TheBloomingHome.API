@@ -6,11 +6,12 @@ public class Product
 {
     public int Id { get; set; }
     public string Name { get; set; }
+    public string ImageSrc { get; set; }
     public string Description { get; set; }
     public int Count { get; set; }
     public bool IsAvailable => Count > 0;
-    public List<Feature> Features { get; set; } = new();
-    public List<Property> Stats { get; set; } = new();
-    //public List<Comment> Comments { get; set; } = new();
+    public int NewPrice { get; set; }
+    public int OldPrice { get; set; }
+    public bool IsSale => OldPrice == 0;
 }
 

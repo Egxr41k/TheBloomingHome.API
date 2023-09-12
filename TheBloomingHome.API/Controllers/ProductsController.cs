@@ -24,19 +24,19 @@ namespace TheBloomingHome.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<ProductDetails>> GetProductDetails(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var productDetails = await _context.ProductsDetails.FindAsync(id);
 
-            if (product == null)
+            if (productDetails == null)
             {
                 return NotFound();
             }
 
-            product.Features = await _context.Features.Where(feature => feature.ProductId == id).ToListAsync();
-            product.Stats = await _context.Stats.Where(property => property.ProductId == id).ToListAsync();
+            productDetails.Features = await _context.Features.Where(feature => feature.ProductId == id).ToListAsync();
+            productDetails.Stats = await _context.Stats.Where(property => property.ProductId == id).ToListAsync();
 
-            return product;
+            return productDetails;
         }
 
         [HttpPost]
@@ -45,7 +45,7 @@ namespace TheBloomingHome.API.Controllers
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+            return CreatedAtAction(nameof(GetProductDetails), new { id = product.Id }, product);
         }
 
         [HttpPut("{id}")]
