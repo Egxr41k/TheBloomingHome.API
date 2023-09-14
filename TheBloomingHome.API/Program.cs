@@ -1,7 +1,9 @@
 using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using TheBloomingHome.API.Data;
+using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +42,8 @@ string AssettsPath =
            Path.Combine(
                AppContext.BaseDirectory,
                @"..\..\..\Assets"));
+int LastId = 0;
+//string absolutepath = HttpContext.Current.Request.Url.AbsoluteUri;
 
 app.MapPost("/SaveImage", async (context) =>
 {
@@ -55,21 +59,38 @@ app.MapPost("/SaveImage", async (context) =>
             return;
         }
 
-        var fileName = $"{Guid.NewGuid()}.jpg";
-        var filePath = Path.Combine(AssettsPath, fileName);
+        var imageName = $"Image_{LastId}.jpg";
+        var imagePath = Path.Combine(AssettsPath, imageName);
 
-        using (var stream = new FileStream(filePath, FileMode.Create))
+        using (var stream = new FileStream(imagePath, FileMode.Create))
         {
             await imageFile.CopyToAsync(stream);
         }
-
-        await context.Response.WriteAsJsonAsync(filePath);
+        
+        await context.Response.WriteAsJsonAsync($"{context.Request.Path}/{LastId}");
     }
     catch (Exception ex)
     {
         context.Response.StatusCode = 500; // Internal Server Error
         await context.Response.WriteAsync($"An error occurred: {ex.Message}");
     }
+});
+
+app.MapGet("/GetImage/{id}", async (int id) =>
+{
+
+    var imageName = $"Image_{id}.jpg";
+    var imagePath = Path.Combine(AssettsPath, imageName);
+    if (!File.Exists(imagePath))
+    {
+        return Results.NotFound();
+    }
+
+    // Читаем содержимое файла
+    var imageBytes = await File.ReadAllBytesAsync(imagePath);
+
+    // Возвращаем изображение в формате jpeg
+    return Results.File(imageBytes, "image/jpeg");
 });
 
 
