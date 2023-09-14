@@ -1,3 +1,5 @@
+using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TheBloomingHome.API.Data;
 
@@ -32,6 +34,43 @@ app.UseCors(options => options
     .AllowAnyMethod()
     .AllowAnyHeader()
 );
+
+string AssettsPath =
+       Path.GetFullPath(
+           Path.Combine(
+               AppContext.BaseDirectory,
+               @"..\..\..\Assets"));
+
+app.MapPost("/SaveImage", async (context) =>
+{
+    try
+    {
+        var form = await context.Request.ReadFormAsync();
+        var imageFile = form.Files.GetFile("image");
+
+        if (imageFile == null)
+        {
+            context.Response.StatusCode = 400; // Bad Request
+            await context.Response.WriteAsync("No file was found in the request.");
+            return;
+        }
+
+        var fileName = $"{Guid.NewGuid()}.jpg";
+        var filePath = Path.Combine(AssettsPath, fileName);
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await imageFile.CopyToAsync(stream);
+        }
+
+        await context.Response.WriteAsJsonAsync(filePath);
+    }
+    catch (Exception ex)
+    {
+        context.Response.StatusCode = 500; // Internal Server Error
+        await context.Response.WriteAsync($"An error occurred: {ex.Message}");
+    }
+});
 
 
 app.Run();
