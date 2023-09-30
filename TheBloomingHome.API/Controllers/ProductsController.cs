@@ -26,17 +26,18 @@ namespace TheBloomingHome.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDetails>> GetProductDetails(int id)
         {
-            var productDetails = await _context.ProductsDetails.FindAsync(id);
+            var productDetails = await _context.Products.FindAsync(id);
 
             if (productDetails == null)
             {
                 return NotFound();
             }
-
-            productDetails.Features = await _context.Features.Where(feature => feature.ProductId == id).ToListAsync();
-            productDetails.Stats = await _context.Stats.Where(property => property.ProductId == id).ToListAsync();
-
-            return productDetails;
+            return new ProductDetails()
+            {
+                Id = id,
+                Features = await _context.Features.Where(feature => feature.ProductId == id).ToListAsync(),
+                Stats = await _context.Stats.Where(property => property.ProductId == id).ToListAsync(),
+            };
         }
 
         [HttpPost]
@@ -49,13 +50,9 @@ namespace TheBloomingHome.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        public async Task<IActionResult> PutProduct(Product product)
         {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
-
+            _context.Products.Update(product);
             _context.Entry(product).State = EntityState.Modified;
 
             try
@@ -64,7 +61,7 @@ namespace TheBloomingHome.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(id))
+                if (!ProductExists(product.Id))
                 {
                     return NotFound();
                 }

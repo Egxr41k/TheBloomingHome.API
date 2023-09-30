@@ -1,9 +1,5 @@
-using Azure.Core;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using TheBloomingHome.API.Data;
-using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +39,6 @@ string AssettsPath =
                AppContext.BaseDirectory,
                @"..\..\..\Assets"));
 int LastId = 0;
-//string absolutepath = HttpContext.Current.Request.Url.AbsoluteUri;
 
 app.MapPost("/SaveImage", async (context) =>
 {
@@ -61,13 +56,14 @@ app.MapPost("/SaveImage", async (context) =>
 
         var imageName = $"Image_{LastId}.jpg";
         var imagePath = Path.Combine(AssettsPath, imageName);
+        LastId++;
 
         using (var stream = new FileStream(imagePath, FileMode.Create))
         {
             await imageFile.CopyToAsync(stream);
         }
-        
-        await context.Response.WriteAsJsonAsync($"{context.Request.Path}/{LastId}");
+
+        await context.Response.WriteAsJsonAsync($"https://localhost:7128/GetImage/{LastId}");
     }
     catch (Exception ex)
     {
