@@ -1,100 +1,143 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using TheBloomingHome.API.Data;
 using TheBloomingHome.API.Entities;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace TheBloomingHome.API.Controllers
+namespace TheBloomingHome.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class DetailsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class DetailsController : ControllerBase
+    private readonly ProductContext _context;
+    private List<ProductDetails> detailsList;
+
+    public DetailsController(ProductContext context)
     {
-        private readonly ProductContext _context;
+        _context = context;
+        detailsList = Synchronize().Result;
+    }
 
-        public DetailsController(ProductContext context)
+    private async Task<List<ProductDetails>> Synchronize()
+    {
+        var result = new List<ProductDetails>();
+        await _context.Products.ForEachAsync(async product =>
         {
-            _context = context;
-        }
-
-        // GET api/<DetailsController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDetails>> Get(int id)
-        {
-            var productDetails = await _context.Products.FindAsync(id);
-
-            if (productDetails == null)
+            result.Add(new ProductDetails()
             {
-                return NotFound();
-            }
-            return new ProductDetails()
-            {
-                Id = id,
-                Features = await _context.Features.Where(feature => feature.ProductId == id).ToListAsync(),
-                Stats = await _context.Stats.Where(property => property.ProductId == id).ToListAsync(),
-            };
-        }
-
-        // POST api/<DetailsController>
-        [HttpPost]
-        public async void Post([FromBody] ProductDetails details)
-        {
-            details.Stats.ForEach(property =>
-            {
-                _context.Stats.Add(property);
+                Id = product.Id,
+                Features = await _context.Features.Where(feature =>
+                    feature.ProductId == product.Id).ToListAsync(),
+                Stats = await _context.Stats.Where(property =>
+                    property.ProductId == product.Id).ToListAsync(),
             });
+        });
+        return result;
 
-            details.Features.ForEach(feature =>
-            {
-                _context.Features.Add(feature);
-            });
+    }
 
+    [HttpGet]
+    public async Task<IActionResult> GetDetailsList()
+    {
+        return Ok(detailsList);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetDetails([FromRoute] int id)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product != null)
+        {
+            var productDetails = detailsList.Find(details => details.Id == id);
+            if (productDetails == null) return NotFound();
+            return Ok(productDetails);
+        }
+        else return NotFound();
+
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> PostDetails([FromBody] ProductDetails details)
+    {
+
+        details.Stats.ForEach(property =>
+        {
+            _context.Stats.Add(property);
+        });
+
+        details.Features.ForEach(feature =>
+        {
+            _context.Features.Add(feature);
+        });
+        detailsList.Add(details);
+
+        try
+        {
             await _context.SaveChangesAsync();
+            return Ok(details);
         }
+        catch (Exception ex) { return BadRequest(ex.Message); }
+    }
 
-        // PUT api/<DetailsController>/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] ProductDetails details)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutDetails([FromBody] ProductDetails details)
+    {
+        details.Stats.ForEach(property =>
         {
-            try
+            var existingProperty = _context.Stats.FirstOrDefault(p => p.Id == property.Id);
+            if (existingProperty != null)
             {
-                details.Stats.ForEach(property =>
-                {
-                    var existingProperty = _context.Stats.FirstOrDefault(p => p.Id == property.Id);
-                    if (existingProperty != null)
-                    {
-                        existingProperty.Name = property.Name;
-                        existingProperty.Value = property.Value;
-                    }
-                    else _context.Stats.Add(property);
-                });
-
-                details.Features.ForEach(feature =>
-                {
-                    var existingProperty = _context.Features.FirstOrDefault(f => f.Id == feature.Id);
-                    if (existingProperty != null)
-                    {
-                        existingProperty.Title = feature.Title;
-                        existingProperty.Description = feature.Description;
-                        existingProperty.ImageSrc = feature.ImageSrc;
-                    }
-                    else _context.Features.Add(feature);
-                });
-
-                await _context.SaveChangesAsync();
-                return NoContent();
+                existingProperty.Name = property.Name;
+                existingProperty.Value = property.Value;
             }
-            catch (Exception ex)
-            {
-                return BadRequest("Ошибка при обновлении деталей продукта");
-            }
-        }
+            else _context.Stats.Add(property);
+        });
 
-        // DELETE api/<DetailsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        details.Features.ForEach(feature =>
         {
+            var existingProperty = _context.Features.FirstOrDefault(f => f.Id == feature.Id);
+            if (existingProperty != null)
+            {
+                existingProperty.Title = feature.Title;
+                existingProperty.Description = feature.Description;
+                existingProperty.ImageSrc = feature.ImageSrc;
+            }
+            else _context.Features.Add(feature);
+        });
+
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok(details);
         }
+        catch (Exception ex) { return BadRequest(ex.Message); }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteDetails([FromRoute] int id)
+    {
+        var details = detailsList.Find(details => details.Id == id);
+        if (details == null) return NotFound();
+
+        details.Stats.ForEach(property =>
+        {
+            _context.Stats.Remove(property);
+        });
+
+        details.Features.ForEach(feature =>
+        {
+            _context.Features.Remove(feature);
+        });
+        detailsList.Remove(details);
+
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception ex) { return BadRequest(ex.Message); }
     }
 }

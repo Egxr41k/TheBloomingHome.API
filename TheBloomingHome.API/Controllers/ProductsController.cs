@@ -2,96 +2,75 @@
 using Microsoft.EntityFrameworkCore;
 using TheBloomingHome.API.Data;
 using TheBloomingHome.API.Entities;
-using System.Linq;
 
-namespace TheBloomingHome.API.Controllers
+namespace TheBloomingHome.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class ProductsController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    private readonly ProductContext _context;
+
+    public ProductsController(ProductContext context)
     {
-        private readonly ProductContext _context;
+        _context = context;
+    }
 
-        public ProductsController(ProductContext context)
+    [HttpGet]
+    public async Task<IActionResult> GetProducts()
+    {
+        return Ok(await _context.Products.ToListAsync());
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProduct([FromRoute] int id)
+    {
+        var product = await _context.Products.FindAsync(id);
+        if (product == null) return NotFound();
+        return Ok(product);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> PostProduct([FromBody] Product product)
+    {
+        _context.Products.Add(product);
+
+        try
         {
-            _context = context;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
-        {
-            return await _context.Products.ToListAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDetails>> GetProductDetails(int id)
-        {
-            var productDetails = await _context.Products.FindAsync(id);
-
-            if (productDetails == null)
-            {
-                return NotFound();
-            }
-            return new ProductDetails()
-            {
-                Id = id,
-                Features = await _context.Features.Where(feature => feature.ProductId == id).ToListAsync(),
-                Stats = await _context.Stats.Where(property => property.ProductId == id).ToListAsync(),
-            };
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
-        {
-            _context.Products.Add(product);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetProductDetails), new { id = product.Id }, product);
+            return Ok(product);
         }
+        catch (Exception ex) { return BadRequest(ex.Message); }
+    }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(Product product)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutProduct([FromBody] Product product)
+    {
+        var existingProduct = await _context.Products.FindAsync(product.Id);
+        if (existingProduct == null) return NotFound();
+
+        existingProduct = product;
+
+        try
         {
-            _context.Products.Update(product);
-            _context.Entry(product).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(product.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
-        {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            _context.Products.Remove(product);
             await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(product);
         }
+        catch (Exception ex) { return BadRequest(ex.Message); }
+    }
 
-        private bool ProductExists(int id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProduct([FromRoute] int id)
+    {
+        var product = await _context.Products.FindAsync(id);
+        if (product == null) return NotFound();
+        _context.Products.Remove(product);
+
+        try
         {
-            return _context.Products.Any(e => e.Id == id);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
+        catch (Exception ex) { return BadRequest(ex.Message); }
     }
 }
