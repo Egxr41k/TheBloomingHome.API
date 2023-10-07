@@ -23,19 +23,24 @@ public class DetailsController : ControllerBase
     private async Task<List<ProductDetails>> Synchronize()
     {
         var result = new List<ProductDetails>();
-        await _context.Products.ForEachAsync(async product =>
+        var products = await _context.Products.ToListAsync();
+
+        foreach (var product in products)
         {
-            result.Add(new ProductDetails()
+            var productDetails = new ProductDetails()
             {
                 Id = product.Id,
-                Features = await _context.Features.Where(feature =>
-                    feature.ProductId == product.Id).ToListAsync(),
-                Stats = await _context.Stats.Where(property =>
-                    property.ProductId == product.Id).ToListAsync(),
-            });
-        });
-        return result;
+                Features = await _context.Features
+                    .Where(feature => feature.ProductId == product.Id)
+                    .ToListAsync(),
+                Stats = await _context.Stats
+                    .Where(property => property.ProductId == product.Id)
+                    .ToListAsync(),
+            };
 
+            result.Add(productDetails);
+        }
+        return result;
     }
 
     [HttpGet]
