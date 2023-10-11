@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace TheBloomingHome.API.Entities;
+﻿namespace TheBloomingHome.API.Entities;
 
 public class Product
 {
@@ -12,6 +10,6 @@ public class Product
     public bool IsAvailable => Count > 0;
     public int NewPrice { get; set; }
     public int OldPrice { get; set; }
-    public bool IsSale => OldPrice == 0;
+    public bool IsSale => NewPrice < OldPrice;
 }
 

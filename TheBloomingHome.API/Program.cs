@@ -64,7 +64,9 @@ app.MapPost("/SaveImage", async (context) =>
             await imageFile.CopyToAsync(stream);
         }
 
-        await context.Response.WriteAsJsonAsync($"https://localhost:7128/GetImage/{LastId}");
+        await context.Response.WriteAsJsonAsync(
+            $"{context.Request.Scheme}://{context.Request.Host}/GetImage/{LastId}");
+
         LastId++;
     }
     catch (Exception ex)

@@ -49,7 +49,12 @@ public class ProductsController : ControllerBase
         var existingProduct = await _context.Products.FindAsync(product.Id);
         if (existingProduct == null) return NotFound();
 
-        existingProduct = product;
+        existingProduct.Name = product.Name;
+        existingProduct.ImageSrc = product.ImageSrc;
+        existingProduct.Description = product.Description;
+        existingProduct.Count = product.Count;
+        existingProduct.NewPrice = product.NewPrice;
+        existingProduct.OldPrice = product.OldPrice;
 
         try
         {
