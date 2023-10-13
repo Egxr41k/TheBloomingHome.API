@@ -33,11 +33,12 @@ app.UseCors(options => options
     .AllowAnyHeader()
 );
 
-string AssettsPath =
-       Path.GetFullPath(
-           Path.Combine(
-               AppContext.BaseDirectory,
-               @"..\..\..\Assets"));
+string AssettsPath = Path.Combine(Environment.CurrentDirectory, "Assets");
+if (!Directory.Exists(AssettsPath))
+{
+    Directory.CreateDirectory(AssettsPath);
+}
+
 
 int LastId = Directory.GetFiles(AssettsPath).Length;
 
