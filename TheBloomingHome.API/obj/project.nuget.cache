@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "nEXrbN9LFN9xs112ZEaHdXxj7wcE0mcOmI0I/I6sYtf+FwM3u5ihNeifaKg7tgeRYxJF2kDq3cvTCnCAfZ02Ig==",
+  "dgSpecHash": "lTkpGBTuB3FcBHY29kD6Ffesr6lLlgyG6Se5Pfmh0lp4dvU5VysbByxNRFffwj+XHJe9KT05Mlcwv5BLQAE5hg==",
   "success": true,
   "projectFilePath": "C:\\Users\\777\\Desktop\\TheBloomingHome\\TheBloomingHome.API\\TheBloomingHome.API.csproj",
   "expectedPackageFiles": [
@@ -65,7 +65,6 @@
     "C:\\Users\\777\\.nuget\\packages\\system.resources.resourcemanager\\4.3.0\\system.resources.resourcemanager.4.3.0.nupkg.sha512",
     "C:\\Users\\777\\.nuget\\packages\\system.runtime\\4.3.0\\system.runtime.4.3.0.nupkg.sha512",
     "C:\\Users\\777\\.nuget\\packages\\system.runtime.caching\\5.0.0\\system.runtime.caching.5.0.0.nupkg.sha512",
-    "C:\\Users\\777\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\777\\.nuget\\packages\\system.security.accesscontrol\\5.0.0\\system.security.accesscontrol.5.0.0.nupkg.sha512",
     "C:\\Users\\777\\.nuget\\packages\\system.security.cryptography.cng\\5.0.0\\system.security.cryptography.cng.5.0.0.nupkg.sha512",
     "C:\\Users\\777\\.nuget\\packages\\system.security.cryptography.protecteddata\\5.0.0\\system.security.cryptography.protecteddata.5.0.0.nupkg.sha512",
