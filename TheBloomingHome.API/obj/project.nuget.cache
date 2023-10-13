@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lTkpGBTuB3FcBHY29kD6Ffesr6lLlgyG6Se5Pfmh0lp4dvU5VysbByxNRFffwj+XHJe9KT05Mlcwv5BLQAE5hg==",
+  "dgSpecHash": "Jh5I5GXudehtNnv3vVH9mR7/qi7DL3GBMNf+5mE+OyUvwb7eoV5FO2QxqIiOpuB3u9clSOPo9KfSwJUXUTcjmQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\777\\Desktop\\TheBloomingHome\\TheBloomingHome.API\\TheBloomingHome.API.csproj",
+  "projectFilePath": "C:\\Users\\777\\Desktop\\TheBloomingHome.API\\TheBloomingHome.API\\TheBloomingHome.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\777\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\777\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
