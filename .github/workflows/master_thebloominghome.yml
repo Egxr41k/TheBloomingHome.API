@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'TheBloomingHome'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7182483DB41A458D95E2A0D554AA905C }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CEB42FC64958411C9FB30A8728AE541D }}
           package: .
