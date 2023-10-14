@@ -6,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 
 
@@ -16,12 +15,7 @@ builder.Services.AddDbContext<ProductContext>(options =>
 builder.Services.AddControllers();
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
 
 app.UseHttpsRedirection();
 
@@ -89,6 +83,22 @@ app.MapGet("/GetImage/{id}", async (int id) =>
     var imageBytes = await File.ReadAllBytesAsync(imagePath);
 
     return Results.File(imageBytes, "image/jpeg");
+});
+
+app.MapDelete("/DeleteImage/{id}", async(int id) =>
+{
+    try
+    {
+        var imageName = $"Image_{id}.jpg";
+
+        string imagePath = Path.Combine(AssettsPath, imageName);
+        if (File.Exists(imagePath)) File.Delete(imagePath);
+        return Results.Ok($"Image {id} has been deleted.");
+    }
+    catch (Exception ex)
+    {
+        return Results.NotFound();
+    }
 });
 
 
