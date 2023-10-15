@@ -7,11 +7,11 @@ namespace TheBloomingHome.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ProductsController : ControllerBase
+public class ProductController : ControllerBase
 {
     private readonly ProductContext _context;
 
-    public ProductsController(ProductContext context)
+    public ProductController(ProductContext context)
     {
         _context = context;
     }

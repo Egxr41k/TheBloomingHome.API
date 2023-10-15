@@ -22,7 +22,7 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 app.UseCors(options => options
-    .WithOrigins("http://localhost:3000")
+    .WithOrigins("http://localhost:3000", "http://192.168.0.100:3000")
     .AllowAnyMethod()
     .AllowAnyHeader()
 );
@@ -36,7 +36,7 @@ if (!Directory.Exists(AssettsPath))
 
 int LastId = Directory.GetFiles(AssettsPath).Length;
 
-app.MapPost("/SaveImage", async (context) =>
+app.MapPost("api/SaveImage", async (context) =>
 {
     try
     {
@@ -60,7 +60,7 @@ app.MapPost("/SaveImage", async (context) =>
         }
 
         await context.Response.WriteAsJsonAsync(
-            $"{context.Request.Scheme}://{context.Request.Host}/GetImage/{LastId}");
+            $"{context.Request.Scheme}://{context.Request.Host}/api/GetImage/{LastId}");
 
         LastId++;
     }
@@ -71,7 +71,7 @@ app.MapPost("/SaveImage", async (context) =>
     }
 });
 
-app.MapGet("/GetImage/{id}", async (int id) =>
+app.MapGet("api/GetImage/{id}", async (int id) =>
 {
     var imageName = $"Image_{id}.jpg";
     var imagePath = Path.Combine(AssettsPath, imageName);
@@ -85,7 +85,7 @@ app.MapGet("/GetImage/{id}", async (int id) =>
     return Results.File(imageBytes, "image/jpeg");
 });
 
-app.MapDelete("/DeleteImage/{id}", async(int id) =>
+app.MapDelete("api/DeleteImage/{id}", async(int id) =>
 {
     try
     {
