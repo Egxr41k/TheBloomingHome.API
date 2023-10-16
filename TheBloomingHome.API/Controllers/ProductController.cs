@@ -43,7 +43,7 @@ public class ProductController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     public async Task<IActionResult> PutProduct([FromBody] Product product)
     {
         var existingProduct = await _context.Products.FindAsync(product.Id);

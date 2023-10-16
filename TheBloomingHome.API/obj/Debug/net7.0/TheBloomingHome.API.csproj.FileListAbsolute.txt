@@ -99,13 +99,9 @@ C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\Mi
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
-C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\Microsoft.OpenApi.dll
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\Microsoft.SqlServer.Server.dll
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\Mono.TextTemplating.dll
-C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
-C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\System.CodeDom.dll
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\bin\Debug\net7.0\System.Drawing.Common.dll
@@ -132,7 +128,6 @@ C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\obj\Debug\net7.0\Th
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\obj\Debug\net7.0\TheBloomingHome.API.AssemblyInfoInputs.cache
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\obj\Debug\net7.0\TheBloomingHome.API.AssemblyInfo.cs
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\obj\Debug\net7.0\TheBloomingHome.API.csproj.CoreCompileInputs.cache
-C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\obj\Debug\net7.0\TheBloomingHome.API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\obj\Debug\net7.0\TheBloomingHome.API.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\obj\Debug\net7.0\staticwebassets\msbuild.TheBloomingHome.API.Microsoft.AspNetCore.StaticWebAssets.props
 C:\Users\777\Desktop\TheBloomingHome.API\TheBloomingHome.API\obj\Debug\net7.0\staticwebassets\msbuild.build.TheBloomingHome.API.props

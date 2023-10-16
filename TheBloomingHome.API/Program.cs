@@ -36,6 +36,8 @@ if (!Directory.Exists(AssettsPath))
 
 int LastId = Directory.GetFiles(AssettsPath).Length;
 
+object locker = new();
+
 app.MapPost("api/SaveImage", async (context) =>
 {
     try
@@ -53,10 +55,10 @@ app.MapPost("api/SaveImage", async (context) =>
         var imageName = $"Image_{LastId}.jpg";
         var imagePath = Path.Combine(AssettsPath, imageName);
         
-
-        using (var stream = new FileStream(imagePath, FileMode.Create))
+        lock (locker)
         {
-            await imageFile.CopyToAsync(stream);
+            using var stream = new FileStream(imagePath, FileMode.Create);
+            imageFile.CopyToAsync(stream);
         }
 
         await context.Response.WriteAsJsonAsync(

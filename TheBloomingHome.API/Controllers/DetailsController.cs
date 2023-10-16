@@ -87,7 +87,7 @@ public class DetailsController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     public async Task<IActionResult> PutDetails([FromBody] ProductDetails details)
     {
         details.Stats.ForEach(property =>
