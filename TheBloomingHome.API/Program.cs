@@ -36,7 +36,7 @@ if (!Directory.Exists(AssettsPath))
 
 int LastId = Directory.GetFiles(AssettsPath).Length;
 
-object locker = new();
+var loker = new object();
 
 app.MapPost("api/SaveImage", async (context) =>
 {
@@ -55,10 +55,10 @@ app.MapPost("api/SaveImage", async (context) =>
         var imageName = $"Image_{LastId}.jpg";
         var imagePath = Path.Combine(AssettsPath, imageName);
         
-        lock (locker)
+
+        using (var stream = new FileStream(imagePath, FileMode.Create))
         {
-            using var stream = new FileStream(imagePath, FileMode.Create);
-            imageFile.CopyToAsync(stream);
+            await imageFile.CopyToAsync(stream);
         }
 
         await context.Response.WriteAsJsonAsync(
@@ -77,14 +77,17 @@ app.MapGet("api/GetImage/{id}", async (int id) =>
 {
     var imageName = $"Image_{id}.jpg";
     var imagePath = Path.Combine(AssettsPath, imageName);
-    if (!File.Exists(imagePath))
-    {
-        return Results.NotFound();
-    }
-
     var imageBytes = await File.ReadAllBytesAsync(imagePath);
 
-    return Results.File(imageBytes, "image/jpeg");
+    if (imageBytes.Length != 0)
+    {
+        return Results.File(imageBytes, "image/jpeg");
+    }
+    else
+    {
+        File.Delete(imagePath);
+        return Results.NotFound();
+    }
 });
 
 app.MapDelete("api/DeleteImage/{id}", async(int id) =>
@@ -92,15 +95,12 @@ app.MapDelete("api/DeleteImage/{id}", async(int id) =>
     try
     {
         var imageName = $"Image_{id}.jpg";
-
         string imagePath = Path.Combine(AssettsPath, imageName);
         if (File.Exists(imagePath)) File.Delete(imagePath);
+
         return Results.Ok($"Image {id} has been deleted.");
     }
-    catch (Exception ex)
-    {
-        return Results.NotFound();
-    }
+    catch (Exception) { return Results.NotFound(); }
 });
 
 
