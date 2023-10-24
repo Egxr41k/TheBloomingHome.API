@@ -22,7 +22,7 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 app.UseCors(options => options
-    .WithOrigins("http://localhost:3000", "http://192.168.0.100:3000")
+    .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader()
 );
@@ -35,8 +35,6 @@ if (!Directory.Exists(AssettsPath))
 
 
 int LastId = Directory.GetFiles(AssettsPath).Length;
-
-var loker = new object();
 
 app.MapPost("api/SaveImage", async (context) =>
 {
