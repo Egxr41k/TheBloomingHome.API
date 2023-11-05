@@ -1,6 +1,6 @@
 # TheBloomingHome.API
 
-The Blooming Home it`s simple e-commerce application that allows you to sell products for home
+The Blooming Home it`s a simple e-commerce application that allows you to sell products for home
 
 The server side of the full-stack application, client-side [here](https://github.com/Egxr41k/TheBloomingHome.UI/)
 
@@ -34,7 +34,7 @@ you can write any number instead of 0
 
 ## Installation and Running 
 ```
-git clone https://github.com/Egxr41k/Notes.API.git 
+git clone https://github.com/Egxr41k/TheBloomingHome.API.git 
 cd Notes.API
 dotnet run ---launch-profile https
 ```
