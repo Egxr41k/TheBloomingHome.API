@@ -1,6 +1,6 @@
 # TheBloomingHome.API
 
-The Blooming Home it`s a simple e-commerce application that allows you to sell products for home
+This is a simple e-commerce application that allows you to sell home goods. It has an admin panel where you can add or update product and order information.
 
 The server side of the full-stack application, client-side [here](https://github.com/Egxr41k/TheBloomingHome.UI/)
 
